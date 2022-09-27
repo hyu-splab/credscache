@@ -1,18 +1,10 @@
-Linux kernel
-============
+CredsCache (main src: fs/overlayfs) 
+=================================================================
+sudo make
+sudo make INSTALL_MOD_STRIP=1 modules_install &&sudo make install
 
-There are several guides for kernel developers and users. These guides can
-be rendered in a number of formats, like HTML and PDF. Please read
-Documentation/admin-guide/README.rst first.
+* Reboot and select Linux5.15.6-CachedOFS-GC
+* Use the filesystem benchmarks (e.g. FxMark) on the Docker instance to measure the performance of CredsCache
 
-In order to build the documentation, use ``make htmldocs`` or
-``make pdfdocs``.  The formatted documentation can also be read online at:
 
-    https://www.kernel.org/doc/html/latest/
-
-There are various text files in the Documentation/ subdirectory,
-several of them using the Restructured Text markup notation.
-
-Please read the Documentation/process/changes.rst file, as it contains the
-requirements for building and running the kernel, and information about
-the problems which may result by upgrading your kernel.
+=================================================================
