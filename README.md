@@ -5,15 +5,15 @@ CredsCache is a caching scheme proposed to improve the scalability and performan
 In CredsCache, a per-process cached version of the mounter's credentials is maintained, allowing each process to perform credential overriding and reverting using its own cached version without updating the shared reference counter. This significantly reduces contention and improves scalability.
 
 
-# Quick Install :
+# Quick Install Guide :
 
 CredsCache (main src: fs/overlayfs) 
 
 ```bash
-sudo make
+sudo make -j $(nproc)
 sudo make INSTALL_MOD_STRIP=1 modules_install &&sudo make install
 ```
 
-* Reboot and select Linux5.15.6-CredsCache
+* Reboot and select Linux 5.15.6-CredsCache
 * Please use the filesystem benchmarks (e.g. FxMark) on the Docker instance to measure the performance of CredsCache
 
