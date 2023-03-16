@@ -98,7 +98,6 @@ void ovl_gc_cached_creds(struct cached_tbl *cached_table, pid_t pid)
 	cached_cred = ovl_get_cached_creds(cached_table, pid, false);
 	if (cached_cred == NULL) return;
 
-	mutex_lock(&(cached_table->lock)); 
 	cached_table->gc = true;
 	hash_for_each_safe(cached_table->table, bkt, tmp, cur_data, node) {
 		pid_found = (pid_t) cur_data->pid;
@@ -112,7 +111,6 @@ void ovl_gc_cached_creds(struct cached_tbl *cached_table, pid_t pid)
 		}
 	}
 	cached_table->gc = false;
-	mutex_unlock(&(cached_table->lock)); 
 
 }
 
@@ -198,11 +196,10 @@ const struct cred *ovl_get_cached_creds(struct cached_tbl *cached_table, __u32 p
 		temp_node->cached_cred->usage.counter = 1;
 		printk("[ovl_get_cached_creds] new cached creds created size:%ld, addr:%p", sizeof(struct cred), temp_node->cached_cred);
 		temp_node->pid = pid;	
-
-		mutex_lock(&cached_table->lock);		
-		hash_add(cached_table->table, &temp_node->node, temp_node->pid);
+		
+		hash_add_rcu(cached_table->table, &temp_node->node, temp_node->pid);
 		printk("[ovl_get_cached_creds] hash_add (pid:%d), table size: %d", pid, ovl_gc_get_table_size(cached_table));
-		mutex_unlock(&cached_table->lock);
+
 		get_new_cred((struct cred *)ofs->creator_cred);
 		cached_cred = temp_node->cached_cred;
 
